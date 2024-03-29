@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 namespace EFSchoolManagement
 {
-    class Program
+    static class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
+            StudentRepo repo = new StudentRepo();
+            await repo.HandleConcurrencyInEF();
+
+            Console.Read();
         }
     }
 }

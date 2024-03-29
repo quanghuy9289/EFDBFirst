@@ -84,6 +84,7 @@
     <Compile Include="StudentAddress.cs">
       <DependentUpon>School.tt</DependentUpon>
     </Compile>
+    <Compile Include="StudentRepo.cs" />
     <Compile Include="Teacher.cs">
       <DependentUpon>School.tt</DependentUpon>
     </Compile>
