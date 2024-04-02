@@ -11,8 +11,16 @@ namespace EFSchoolManagement
         static async Task Main(string[] args)
         {
             StudentRepo repo = new StudentRepo();
-            await repo.HandleConcurrencyInEF();
+            //await repo.HandleConcurrencyInEF();
 
+            //var courses = repo.GetCoursesByStudentId(1);
+            //Console.WriteLine("Course of student: {0}", repo.GetStudentById(1).StudentName);
+            //foreach(var course in courses)
+            //{
+            //    Console.WriteLine("CourseId: {0} - Course Name: {1}", course.CourseId, course.CourseName);
+            //}
+
+            repo.CRUD_WithStoreProcedure();
             Console.Read();
         }
     }

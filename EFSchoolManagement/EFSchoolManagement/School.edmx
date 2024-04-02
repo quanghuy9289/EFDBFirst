@@ -364,7 +364,7 @@ warning 6002: The table/view 'SchoolDB.dbo.View_StudentCourse' does not have a p
             <End Role="Course" EntitySet="Courses" />
             <End Role="Student" EntitySet="Students" />
           </AssociationSet>
-          <FunctionImport Name="GetCoursesByStudentId" ReturnType="Collection(SchoolDBModel.GetCoursesByStudentId_Result)">
+          <FunctionImport Name="GetCoursesByStudentId" EntitySet="Courses" ReturnType="Collection(SchoolDBModel.Course)">
             <Parameter Name="StudentId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_DeleteStudent">
@@ -419,6 +419,23 @@ warning 6002: The table/view 'SchoolDB.dbo.View_StudentCourse' does not have a p
                 <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
               </MappingFragment>
             </EntityTypeMapping>
+            <EntityTypeMapping TypeName="SchoolDBModel.Student">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="SchoolDBModel.Store.sp_InsertStudentInfo">
+                  <ScalarProperty Name="StudentName" ParameterName="StudentName" />
+                  <ScalarProperty Name="StandardId" ParameterName="StandardId" />
+                  <ResultBinding Name="StudentID" ColumnName="StudentId" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="SchoolDBModel.Store.sp_UpdateStudent">
+                  <ScalarProperty Name="StudentID" ParameterName="StudentId" Version="Current" />
+                  <ScalarProperty Name="StudentName" ParameterName="StudentName" Version="Current" />
+                  <ScalarProperty Name="StandardId" ParameterName="StandardId" Version="Current" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="SchoolDBModel.Store.sp_DeleteStudent" >
+                  <ScalarProperty Name="StudentID" ParameterName="StudentId" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="StudentAddresses">
             <EntityTypeMapping TypeName="SchoolDBModel.StudentAddress">
@@ -460,13 +477,6 @@ warning 6002: The table/view 'SchoolDB.dbo.View_StudentCourse' does not have a p
             </EndProperty>
           </AssociationSetMapping>
           <FunctionImportMapping FunctionImportName="GetCoursesByStudentId" FunctionName="SchoolDBModel.Store.GetCoursesByStudentId">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SchoolDBModel.GetCoursesByStudentId_Result">
-                <ScalarProperty Name="courseid" ColumnName="courseid" />
-                <ScalarProperty Name="coursename" ColumnName="coursename" />
-                <ScalarProperty Name="TeacherId" ColumnName="TeacherId" />
-              </ComplexTypeMapping>
-            </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_DeleteStudent" FunctionName="SchoolDBModel.Store.sp_DeleteStudent" />
           <FunctionImportMapping FunctionImportName="sp_InsertStudentInfo" FunctionName="SchoolDBModel.Store.sp_InsertStudentInfo" />

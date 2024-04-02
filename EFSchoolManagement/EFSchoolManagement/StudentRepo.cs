@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -102,6 +103,41 @@ namespace EFSchoolManagement
                     // Ví dụ: Cập nhật UI, thông báo cho người dùng, v.v.
                     Console.WriteLine("The saved entity is different with the original value: currentValues - {0}, databaseValues - {1}", currentValues, databaseValues);
                 }
+            }
+        }
+
+        public Student GetStudentById(int studentId)
+        {
+            using (var context = new SchoolDBEntities())
+            {
+                return context.Students.FirstOrDefault(x => x.StudentID == studentId);
+            }
+        }
+
+        public List<Course> GetCoursesByStudentId(int studentId)
+        {
+            using(var context = new SchoolDBEntities())
+            {
+                return context.GetCoursesByStudentId(studentId).ToList();
+            }
+        }
+
+        public void CRUD_WithStoreProcedure()
+        {
+            using (var context = new SchoolDBEntities())
+            {
+                Student student = new Student() { StudentName = "New Student using SP-2" };
+                
+                context.Students.Add(student);
+                // will execute sp_InsertStudentInfo
+                context.SaveChanges();
+
+                student.StudentName = "Edited student using SP";
+                // will execute sp_UpdateStudent
+                context.SaveChanges();
+
+                context.Students.Remove(student);
+                context.SaveChanges(); // will execute sp_DeleteStudent
             }
         }
     }
