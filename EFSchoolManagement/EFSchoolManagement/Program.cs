@@ -23,8 +23,12 @@ namespace EFSchoolManagement
             //repo.CRUD_WithStoreProcedure();
             //repo.AddNewStudentWithValidation();
             //SQLLogger.DbCommandLogging();
-            SQLLogger.DbCommandLogging_ToConsole();
+            //SQLLogger.DbCommandLogging_ToConsole();
+
+            // tracing SQL query by interceptor
+            repo.QueryAndSave();
             Console.Read();
         }
     }
 }
+

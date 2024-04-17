@@ -55,6 +55,7 @@
     <Compile Include="Course.cs">
       <DependentUpon>School.tt</DependentUpon>
     </Compile>
+    <Compile Include="EFCommandInterceptor.cs" />
     <Compile Include="GetCourseListByStudentID_Result.cs">
       <DependentUpon>School.tt</DependentUpon>
     </Compile>
