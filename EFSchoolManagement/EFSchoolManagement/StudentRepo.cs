@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -138,6 +139,43 @@ namespace EFSchoolManagement
 
                 context.Students.Remove(student);
                 context.SaveChanges(); // will execute sp_DeleteStudent
+            }
+        }
+
+        public void GetStudentCourses()
+        {
+            using (var context = new SchoolDBEntities())
+            {
+                var studentCourses = context.View_StudentCourse.ToList();
+                
+                foreach(var stc in studentCourses)
+                {
+                    Console.WriteLine($"Student: {stc.StudentName} - Course: {stc.CourseName}");
+                }
+            }
+        }
+
+        public void AddNewStudentWithValidation()
+        {
+            try
+            {
+                using (var context = new SchoolDBEntities())
+                {
+                    context.Students.Add(new Student() { StudentName = "" });
+                    context.Standards.Add(new Standard() { StandardName = "" });
+                }
+            
+            }
+            catch(DbEntityValidationException dbEx)
+            {
+                foreach (DbEntityValidationResult entityErr in dbEx.EntityValidationErrors)
+                {
+                    foreach (DbValidationError error in entityErr.ValidationErrors)
+                    {
+                        Console.WriteLine("Error Property Name {0} : Error Message: {1}",
+                                            error.PropertyName, error.ErrorMessage);
+                    }
+                }
             }
         }
     }

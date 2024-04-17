@@ -90,5 +90,15 @@ namespace EFSchoolManagement
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_UpdateStudent", studentIdParameter, standardIdParameter, studentNameParameter);
         }
+    
+        [DbFunction("SchoolDBEntities", "GetCourseListByStudentID")]
+        public virtual IQueryable<GetCourseListByStudentID_Result> GetCourseListByStudentID(Nullable<int> studentID)
+        {
+            var studentIDParameter = studentID.HasValue ?
+                new ObjectParameter("studentID", studentID) :
+                new ObjectParameter("studentID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<GetCourseListByStudentID_Result>("[SchoolDBEntities].[GetCourseListByStudentID](@studentID)", studentIDParameter);
+        }
     }
 }

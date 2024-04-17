@@ -23,7 +23,7 @@ namespace EFSchoolManagement
         public int TeacherId { get; set; }
         public string TeacherName { get; set; }
         public Nullable<int> StandardId { get; set; }
-        public Nullable<int> TeacherType { get; set; }
+        public Nullable<TeacherType> TeacherType { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Course> Courses { get; set; }

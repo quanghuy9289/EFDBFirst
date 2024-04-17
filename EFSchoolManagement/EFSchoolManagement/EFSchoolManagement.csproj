@@ -55,9 +55,13 @@
     <Compile Include="Course.cs">
       <DependentUpon>School.tt</DependentUpon>
     </Compile>
+    <Compile Include="GetCourseListByStudentID_Result.cs">
+      <DependentUpon>School.tt</DependentUpon>
+    </Compile>
     <Compile Include="GetCoursesByStudentId_Result.cs">
       <DependentUpon>School.tt</DependentUpon>
     </Compile>
+    <Compile Include="LaborType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="School.Context.cs">
@@ -75,6 +79,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>School.edmx</DependentUpon>
     </Compile>
+    <Compile Include="SQLLogger.cs" />
     <Compile Include="Standard.cs">
       <DependentUpon>School.tt</DependentUpon>
     </Compile>
@@ -86,6 +91,10 @@
     </Compile>
     <Compile Include="StudentRepo.cs" />
     <Compile Include="Teacher.cs">
+      <DependentUpon>School.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TeacherRepo.cs" />
+    <Compile Include="TeacherType.cs">
       <DependentUpon>School.tt</DependentUpon>
     </Compile>
     <Compile Include="View_StudentCourse.cs">

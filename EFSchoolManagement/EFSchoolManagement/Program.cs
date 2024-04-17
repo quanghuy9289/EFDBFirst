@@ -20,7 +20,10 @@ namespace EFSchoolManagement
             //    Console.WriteLine("CourseId: {0} - Course Name: {1}", course.CourseId, course.CourseName);
             //}
 
-            repo.CRUD_WithStoreProcedure();
+            //repo.CRUD_WithStoreProcedure();
+            //repo.AddNewStudentWithValidation();
+            //SQLLogger.DbCommandLogging();
+            SQLLogger.DbCommandLogging_ToConsole();
             Console.Read();
         }
     }

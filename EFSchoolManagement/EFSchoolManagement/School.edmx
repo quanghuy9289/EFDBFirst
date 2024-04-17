@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SchoolDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SchoolDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Course">
           <Key>
             <PropertyRef Name="CourseId" />
@@ -152,6 +152,19 @@ warning 6002: The table/view 'SchoolDB.dbo.View_StudentCourse' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetCourseListByStudentID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="studentID" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="CourseId" Type="int" />
+                <Property Name="CourseName" Type="varchar" MaxLength="50" />
+                <Property Name="Location" Type="geography" />
+                <Property Name="TeacherId" Type="int" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
         <Function Name="GetCoursesByStudentId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="StudentId" Type="int" Mode="In" />
         </Function>
@@ -207,8 +220,7 @@ warning 6002: The table/view 'SchoolDB.dbo.View_StudentCourse' does not have a p
             <End Role="Teacher" EntitySet="Teacher" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SchoolDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -263,7 +275,7 @@ warning 6002: The table/view 'SchoolDB.dbo.View_StudentCourse' does not have a p
           <Property Name="TeacherId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TeacherName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="StandardId" Type="Int32" />
-          <Property Name="TeacherType" Type="Int32" />
+          <Property Name="TeacherType" Type="SchoolDBModel.TeacherType" />
           <NavigationProperty Name="Courses" Relationship="Self.FK_Course_Teacher" FromRole="Teacher" ToRole="Course" />
           <NavigationProperty Name="Standard" Relationship="Self.FK_Teacher_Standard" FromRole="Teacher" ToRole="Standard" />
         </EntityType>
@@ -365,10 +377,10 @@ warning 6002: The table/view 'SchoolDB.dbo.View_StudentCourse' does not have a p
             <End Role="Student" EntitySet="Students" />
           </AssociationSet>
           <FunctionImport Name="GetCoursesByStudentId" EntitySet="Courses" ReturnType="Collection(SchoolDBModel.Course)">
-            <Parameter Name="StudentId" Mode="In" Type="Int32" />
+          <Parameter Name="StudentId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_DeleteStudent">
-            <Parameter Name="StudentId" Mode="In" Type="Int32" />
+          <Parameter Name="StudentId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_InsertStudentInfo" ReturnType="Collection(Decimal)">
             <Parameter Name="StandardId" Mode="In" Type="Int32" />
@@ -379,10 +391,25 @@ warning 6002: The table/view 'SchoolDB.dbo.View_StudentCourse' does not have a p
             <Parameter Name="StandardId" Mode="In" Type="Int32" />
             <Parameter Name="StudentName" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="GetCourseListByStudentID" IsComposable="true" ReturnType="Collection(SchoolDBModel.GetCourseListByStudentID_Result)">
+            <Parameter Name="studentID" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GetCoursesByStudentId_Result">
           <Property Type="Int32" Name="courseid" Nullable="true" />
           <Property Type="String" Name="coursename" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="TeacherId" Nullable="true" />
+        </ComplexType>
+        <EnumType Name="TeacherType">
+          <Member Name="Permanent" Value="1" />
+          <Member Name="Contract" Value="2" />
+          <Member Name="Guest" Value="3" />
+        </EnumType>
+        <EnumType Name="LaborType" a:ExternalTypeName="LaborType" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+        <ComplexType Name="GetCourseListByStudentID_Result">
+          <Property Type="Int32" Name="CourseId" Nullable="true" />
+          <Property Type="String" Name="CourseName" Nullable="true" MaxLength="50" />
+          <Property Type="Geography" Name="Location" Nullable="true" />
           <Property Type="Int32" Name="TeacherId" Nullable="true" />
         </ComplexType>
       </Schema>
@@ -481,6 +508,16 @@ warning 6002: The table/view 'SchoolDB.dbo.View_StudentCourse' does not have a p
           <FunctionImportMapping FunctionImportName="sp_DeleteStudent" FunctionName="SchoolDBModel.Store.sp_DeleteStudent" />
           <FunctionImportMapping FunctionImportName="sp_InsertStudentInfo" FunctionName="SchoolDBModel.Store.sp_InsertStudentInfo" />
           <FunctionImportMapping FunctionImportName="sp_UpdateStudent" FunctionName="SchoolDBModel.Store.sp_UpdateStudent" />
+          <FunctionImportMapping FunctionImportName="GetCourseListByStudentID" FunctionName="SchoolDBModel.Store.GetCourseListByStudentID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SchoolDBModel.GetCourseListByStudentID_Result">
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="CourseName" ColumnName="CourseName" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="TeacherId" ColumnName="TeacherId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
