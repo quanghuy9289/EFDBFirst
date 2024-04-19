@@ -56,6 +56,7 @@
       <DependentUpon>School.tt</DependentUpon>
     </Compile>
     <Compile Include="EFCommandInterceptor.cs" />
+    <Compile Include="EFTransaction.cs" />
     <Compile Include="GetCourseListByStudentID_Result.cs">
       <DependentUpon>School.tt</DependentUpon>
     </Compile>
@@ -80,6 +81,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>School.edmx</DependentUpon>
     </Compile>
+    <Compile Include="SchoolContext.cs" />
     <Compile Include="SQLLogger.cs" />
     <Compile Include="Standard.cs">
       <DependentUpon>School.tt</DependentUpon>

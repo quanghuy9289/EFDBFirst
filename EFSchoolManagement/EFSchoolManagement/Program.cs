@@ -26,7 +26,10 @@ namespace EFSchoolManagement
             //SQLLogger.DbCommandLogging_ToConsole();
 
             // tracing SQL query by interceptor
-            repo.QueryAndSave();
+            //repo.QueryAndSave();
+
+            //EFTransaction.EFTransaction_BeginTransaction();
+            EFTransaction.EFTransaction_UseTransaction();
             Console.Read();
         }
     }
